@@ -41,6 +41,7 @@ class Enumerable:
 #  since we can't automatically find the inverse element.
 class Group(Enumerable):
     _members = []
+    __invMembers = None
     _ord = 0
     _additive = False
     _neutral = None
@@ -80,14 +81,19 @@ class Group(Enumerable):
     def Ord(self):
         return self._ord
     def Inv(self, g):
-        if (self._additive):
-            for h in self:
-                if (g + h == self._neutral):
-                    return h
-        else:
-            for h in self:
-                if (g * h == self._neutral):
-                    return h
+        if (self.__invMembers == None):
+            self.__invMembers = {}
+        index = self._members.index(g)
+        if not(index in self.__invMembers):
+            if (self._additive):
+                for h in self:
+                    if (g + h == self._neutral):
+                        self.__invMembers[index] = h
+            else:
+                for h in self:
+                    if (g * h == self._neutral):
+                        self.__invMembers[index] = h
+        return self.__invMembers[index]
     def IsAdditive(self):
         return self._additive
 
