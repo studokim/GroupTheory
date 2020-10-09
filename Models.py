@@ -17,9 +17,9 @@ class Enumerable:
         self._ord = len(self._members)
     def __str__(self):
         res = "["
-        for i in range(__self._ord):
+        for i in range(self._ord):
             res += str(self[i])
-            if (i < __self._ord - 1):
+            if (i < self._ord - 1):
                 res += ", "
         res += "]"
         return res
@@ -42,7 +42,6 @@ class Enumerable:
 class Group(Enumerable):
     _members = []
     __invMembers = None
-    _ord = 0
     _additive = False
     _neutral = None
     def __init__(self, lis, additive = False):
@@ -83,54 +82,61 @@ class Group(Enumerable):
     def Inv(self, g):
         if (self.__invMembers == None):
             self.__invMembers = {}
-        index = self._members.index(g)
-        if not(index in self.__invMembers):
-            if (self._additive):
-                for h in self:
+        ig = self._members.index(g)
+        if not(ig in self.__invMembers):
+            for ih in range(self._ord):
+                h = self._members[ih]
+                if (self._additive):
                     if (g + h == self._neutral):
-                        self.__invMembers[index] = h
-            else:
-                for h in self:
+                        self.__invMembers[ig] = h
+                else:
                     if (g * h == self._neutral):
-                        self.__invMembers[index] = h
-        return self.__invMembers[index]
+                        self.__invMembers[ig] = h
+        return self.__invMembers[ig]
     def IsAdditive(self):
         return self._additive
 
 #  self.__classes is for the backwards compatibility
-#  with the Group
+#  with the Group. Commutativity is assumpted.
 class FactorGroup(Group):
     __classes = []
     def __init__(self, G, H):
-        for g in G:
+        for ig in range(G.Ord()):
+            g = G[ig]
             gH = ClassSmezh(g, H)
             if not(gH.Member() in self._members):
                 self._members.append(gH.Member())
                 self.__classes.append(gH)
+        self._members.sort()
+        self._neutral = self.Neutral()
+        self._ord = len(self._members)
     def GetClassByMember(self, g):
         return self._members[self.__classes.index(g)]
-
-class Commutator(Element):
-    def __init__(self, group, g, h):
-        if (group.IsAdditive()):
-            self._val = g + h + group.Inv(g) + group.Inv(h)
-        else:
-            self._val = g * h * group.Inv(g) * group.Inv(h)
 
 #  Not sure if we must sort the _members in ascending order
 #  (the '<' operator in the Element and its successors is needed),
 #  or just hope that the least element will be taken first.
 class ClassSmezh(Enumerable):
     __subgroup = None
-    def __init__(self, g, H):
+    __left = None
+    def __init__(self, g, H, left = True):
         self.__subgroup = H
         self._members = []
+        self.__left = left
         if (H.IsAdditive()):
-            for h in H:
-                self._members.append(g + h)
+            for ih in range(H.Ord()):
+                h = H[ih]
+                if (self.__left):
+                    self._members.append(g + h)
+                else:
+                    self._members.append(h + g)
         else:
-            for h in H:
-                self._members.append(g * h)
+            for ih in range(H.Ord()):
+                h = H[ih]
+                if (self.__left):
+                    self._members.append(g * h)
+                else:
+                    self._members.append(h * g)
         self._members.sort()
         self._ord = len(self._members)
     def __mul__(self, other):
@@ -140,16 +146,26 @@ class ClassSmezh(Enumerable):
         else:
             return None
     def Member(self):
-        return self.members[0]
+        return self._members[0]
+
+class Commutator(Element):
+    def __init__(self, G, g, h):
+        if (G.IsAdditive()):
+            self._val = g + h + G.Inv(g) + G.Inv(h)
+        else:
+            self._val = g * h * G.Inv(g) * G.Inv(h)
 
 #  We know that for all the Groups with self._ord < 96
 #  the Commutant is just the set of all the Commutators.
 #  Don't want to work with bigger Groups :(
 class Commutant(Enumerable):
     def __init__(self, G):
-        for g in G:
-            c = Commutator(g)
-            if not(c in self._members):
-                self._members.append(c)
+        for ig in range(G.Ord()):
+            g = G[ig]
+            for ih in range(G.Ord()):
+                h = G[ih]
+                c = Commutator(G, g, h)
+                if not(c in self._members):
+                    self._members.append(c)
         self._members.sort()
         self._ord = len(self._members)
