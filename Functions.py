@@ -10,7 +10,7 @@ def MakeMyGroup():
                 lis.append(MyGroup.ZQ(z, q, s))
     return Models.Group(lis)
 
-#  Calculate orders of the G=Z/3Z*Q8 group members
+#  Calculate orders of the G group members
 def PrintOrders(G):
     e = G.Neutral()
     k1 = len(str(e)) + 1
