@@ -81,17 +81,18 @@ class Group(Enumerable):
         return self._ord
     def Inv(self, g):
         if (self._additive):
-            for h in G:
+            for h in self:
                 if (g + h == self._neutral):
                     return h
         else:
-            for h in G:
+            for h in self:
                 if (g * h == self._neutral):
                     return h
     def IsAdditive(self):
         return self._additive
 
-#  self.__classes is for the backwards compatibility with the Group
+#  self.__classes is for the backwards compatibility
+#  with the Group
 class FactorGroup(Group):
     __classes = []
     def __init__(self, G, H):

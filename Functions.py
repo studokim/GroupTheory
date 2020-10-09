@@ -1,39 +1,34 @@
 import Models
-import CurrentGroup
+import MyGroup
 
-# Fill the G=Z/3Z*Q8 group
+#  Fill the G=Z/3Z*Q8 group
 def MakeMyGroup():
     lis = []
     for z in range(3):
         for q in range(4):
-            for s in range(1, -2, -2):
-                lis.append(CurrentGroup.ZQ(z, q, s))
+            for s in range(-1, 2, 2):
+                lis.append(MyGroup.ZQ(z, q, s))
     return Models.Group(lis)
 
-'''
-# Calculate orders of the G=Z/3Z*Q8 group members
-for g in G.members:
-    power = 1
-    while not (g ** power == e):
-        power += 1
-    print("ord {0:7} = {1:2}".format(g, power))
-
-# Fill the inverses (the same G group actually)
-G_inv = Group([])
-for g in G.members:
-    for h in G.members:
-        if (g*h == e):
-            G_inv.Add(h)
-print("G_inv = {0}".format(G_inv))
+#  Calculate orders of the G=Z/3Z*Q8 group members
+def PrintOrders(G):
+    e = G.Neutral()
+    k1 = len(str(e)) + 1
+    for g in G:
+        power = 1
+        while not (g ** power == e):
+            power += 1
+        k2 = power // 10 + 1
+        print("ord {0:{1}} = {2:{3}}".format(str(g), k1,
+            power, k2))
 
 def CheckIfSubgroupIsNormal(G, H):
-   for h in H.members:
-       for i in range(len(G.members)):
-            if not(G.members[i] * h * G_inv.members[i]
-                    in N.members):
+    for h in H:
+        for g in G:
+            if not(g * h * G.Inv(g) in H):
                 return False
     return True
-
+'''
 # Check if N=<(1, 1)> is a normal subgroup
 c = ZQ(Z(1), Q(0, 1))
 N = Group([c ** 0, c ** 1, c ** 2])
