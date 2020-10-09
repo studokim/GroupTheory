@@ -10,6 +10,19 @@ def MakeMyGroup():
                 lis.append(MyGroup.ZQ(z, q, s))
     return Models.Group(lis)
 
+def GenerateGroup(g, additive = False):
+    lis = []
+    res = g
+    if (additive):
+        while not(res in lis):
+            lis.append(res)
+            res += g
+    else:
+        while not(res in lis):
+            lis.append(res)
+            res *= g
+    return Models.Group(lis, additive)
+
 #  Calculate orders of the G group members
 def PrintOrders(G):
     e = G.Neutral()
@@ -29,26 +42,6 @@ def CheckIfSubgroupIsNormal(G, H):
                 return False
     return True
 '''
-# Check if N=<(1, 1)> is a normal subgroup
-c = ZQ(Z(1), Q(0, 1))
-N = Group([c ** 0, c ** 1, c ** 2])
-print("N = {0}".format(N))
-print("The <{0}> group is normal: {1}".
-        format(c, CheckIfSubgroupIsNormal(G, N)))
-
-# Check if N=<(2, 1)> is a normal subgroup
-c = ZQ(Z(2), Q(0, 1))
-N = Group([c ** 0, c ** 1, c ** 2])
-print("N = {0}".format(N))
-print("The <{0}> group is normal: {1}".
-        format(c, CheckIfSubgroupIsNormal(G, N)))
-
-# Check if N=<(0, i)> is a normal subgroup
-c = ZQ(Z(0), Q(2, 1))
-N1 = Group([c ** 0, c ** 1, c ** 2, c ** 3])
-print("N1 = {0}".format(N1))
-print("The <{0}> group is normal: {1}".
-        format(c, CheckIfSubgroupIsNormal(G, N)))
 
 # Find the Left classes smezhnosty
 for g in G.members:
