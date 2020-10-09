@@ -8,7 +8,6 @@ def MakeMyGroup():
         for q in range(4):
             for s in range(1, -2, -2):
                 lis.append(CurrentGroup.ZQ(z, q, s))
-    print(lisgi)
     return Models.Group(lis)
 
 '''
