@@ -13,7 +13,7 @@ class Enumerable:
     _members = []
     _ord = 0
     def __init__(self, lis):
-        self._members = lis.sort()
+        self._members = sorted(lis)
         self._ord = len(self._members)
     def __str__(self):
         res = "["
@@ -45,7 +45,7 @@ class Group(Enumerable):
     _additive = False
     _neutral = None
     def __init__(self, lis, additive = False):
-        self._members = lis.sort()
+        self._members = sorted(lis)
         self._ord = len(self._members)
         self._additive = additive
         self._neutral = self.Neutral()
