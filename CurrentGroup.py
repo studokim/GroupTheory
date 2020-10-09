@@ -52,7 +52,10 @@ class Q(Models.Element):
             else:
                 mult = -1
             keymod = (self.__key + other.__key) % 4
-            key = 2 if (keymod == 0) else keymod
+            if (keymod == 0):
+                key = 2
+            else:
+                key = keymod
         sign = self.__sign * other.__sign * mult
         return Q(key, sign)
     def Psi(self):

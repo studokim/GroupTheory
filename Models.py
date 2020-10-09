@@ -51,9 +51,9 @@ class Group(Enumerable):
         self._neutral = self.Neutral()
     def __str__(self):
         res = "{"
-        for i in range(__self._ord):
+        for i in range(self._ord):
             res += str(self[i])
-            if (i < __self._ord - 1):
+            if (i < self._ord - 1):
                 res += ", "
         res += "}"
         return res
@@ -72,12 +72,10 @@ class Group(Enumerable):
                 for h in self:
                     if (self._additive):
                         if (g + h == g):
-                            self._neutral = h
-                            break
+                            return h
                     else:
                         if (g * h == g):
-                            self._neutral = h
-                            break
+                            return h
         return self._neutral
     def Ord(self):
         return self._ord
