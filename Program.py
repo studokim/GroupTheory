@@ -17,6 +17,7 @@ G = Functions.MakeMyGroup()
 '''task 1'''
 PrintTask(1)
 Functions.PrintOrders(G)
+Functions.PrintSubgroupWithOrder(G, 4)
 
 '''task 2'''
 PrintTask(2)
@@ -32,12 +33,14 @@ PrintTask(3)
 H = Functions.GenerateGroup(MyGroup.ZQ(1, 0, 1))
 print("H = <1, 1> = {0}".format(str(H)))
 Functions.PrintIfSubgroupIsNormal(G, H)
-print("Cayley table of the G/H FactorGroup:")
 GH = Models.FactorGroup(G, H)
+print("The G/H FactorGroup:\n{0}".format(GH))
+print("Cayley table of the G/H FactorGroup:")
 Functions.CayleyTable(GH)
 
 '''task 4'''
 PrintTask(4)
+print(Functions.GenerateGroup(MyGroup.ZQ(0, 2, 1)))
 print("Cayley table of the Group of Quaternions:")
 Quat = Models.Group([MyGroup.Q(q, s) for q in range(4)
     for s in range(1, -2, -2)])

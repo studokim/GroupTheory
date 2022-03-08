@@ -110,8 +110,18 @@ class FactorGroup(Group):
         self._members.sort()
         self._neutral = self.Neutral()
         self._ord = len(self._members)
+    def __str__(self):
+        res = "{"
+        for i in range(self._ord):
+            if (i > 0):
+                res += ' '
+            res += str(self.__classes[i])
+            if (i < self._ord - 1):
+                res += ", \n"
+        res += "}"
+        return res
     def GetClassByMember(self, g):
-        return self._members[self.__classes.index(g)]
+        return self.__classes[self._members.index(g)]
 
 #  Not sure if we must sort the _members in ascending order
 #  (the '<' operator in the Element and its successors is needed),

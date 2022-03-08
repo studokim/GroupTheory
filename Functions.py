@@ -83,3 +83,28 @@ def CayleyTable(G):
             g2 = G[ig2]
             print("{0:{1}}".format(str(g1 * g2), k), end=' | ')
         print()
+
+def GetOrders(G):
+    e = G.Neutral()
+    res = []
+    for i in range(G.Ord()):
+        g = G[i]
+        power = 1
+        while not (g ** power == e):
+            power += 1
+        res.append(power)
+    return res
+
+def PrintSubgroupWithOrder(G, order):
+    orders = GetOrders(G)
+    subgroups = []
+    for i in range(G.Ord()):
+        if (orders[i] == order):
+            H = GenerateGroup(G[i])
+            if not(H in subgroups):
+                subgroups.append(H)
+    if (len(subgroups) == 0):
+        print("There's no H < G: |H| = {0}".format(order))
+    else:
+        for H in subgroups:
+            print(H)
