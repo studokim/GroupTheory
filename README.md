@@ -15,3 +15,7 @@ For each given multiplicative or additive group, the following is possible:
 - compute the commutant
 - build a factorgroup by a given subgroup
 - build the Cayley table
+
+## Examples
+
+Please see [the output](./output.txt).
